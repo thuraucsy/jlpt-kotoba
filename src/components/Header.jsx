@@ -1,7 +1,10 @@
 import React from 'react';
 import './Header.css';
+import { useInstallPrompt } from '../hooks/useInstallPrompt.js';
 
 export default function Header({ wordCount, totalCount }) {
+  const { canInstall, installed, triggerInstall } = useInstallPrompt();
+
   return (
     <header className="header">
       <div className="header-inner">
@@ -25,6 +28,14 @@ export default function Header({ wordCount, totalCount }) {
               <span className="count-total">{totalCount.toLocaleString()}</span>
               <span className="count-label"> words</span>
             </span>
+          )}
+          {installed && (
+            <span className="install-badge" title="Installed">✓ App</span>
+          )}
+          {canInstall && (
+            <button className="install-btn" onClick={triggerInstall} title="Install app">
+              ⬇ Install
+            </button>
           )}
         </div>
       </div>

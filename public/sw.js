@@ -1,83 +1,89 @@
-const CACHE_NAME = 'jlptkotoba-v1';
-const STATIC_ASSETS = [
-  './',
-  './index.html',
-  './kotoba.csv',
-  './manifest.json',
+const CACHE_NAME = 'jlptkotoba-v2';
+
+// Pre-cache shell assets
+const PRECACHE = [
+  '/',
+  '/index.html',
+  '/manifest.json',
+  '/icon.svg',
+  '/icon-192.png',
+  '/icon-512.png',
+  '/apple-touch-icon.png',
+  '/kotoba.csv',
 ];
 
+// ── Install: pre-cache shell ──────────────────────────────────────────────────
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(STATIC_ASSETS).catch((err) => {
-        console.warn('Some assets failed to cache:', err);
-      });
-    })
+    caches.open(CACHE_NAME).then((cache) =>
+      cache.addAll(PRECACHE).catch((err) =>
+        console.warn('[SW] Pre-cache failed (some assets may not exist yet):', err)
+      )
+    )
   );
   self.skipWaiting();
 });
 
+// ── Activate: clear old caches ────────────────────────────────────────────────
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames
-          .filter((name) => name !== CACHE_NAME)
-          .map((name) => caches.delete(name))
-      );
-    })
+    caches.keys().then((names) =>
+      Promise.all(
+        names.filter((n) => n !== CACHE_NAME).map((n) => caches.delete(n))
+      )
+    )
   );
   self.clients.claim();
 });
 
+// ── Fetch: cache-first for assets, network-first for navigation ───────────────
 self.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = new URL(request.url);
 
-  // Skip non-GET requests
   if (request.method !== 'GET') return;
-
-  // Skip chrome-extension and other non-http requests
   if (!url.protocol.startsWith('http')) return;
 
+  // Navigation requests → network first, fall back to cached index.html
+  if (request.mode === 'navigate') {
+    event.respondWith(
+      fetch(request)
+        .then((res) => {
+          const clone = res.clone();
+          caches.open(CACHE_NAME).then((c) => c.put(request, clone));
+          return res;
+        })
+        .catch(() => caches.match('/index.html'))
+    );
+    return;
+  }
+
+  // kotoba.csv — cache-first (large file, rarely changes)
+  if (url.pathname.endsWith('kotoba.csv')) {
+    event.respondWith(
+      caches.match(request).then(
+        (cached) => cached || fetch(request).then((res) => {
+          const clone = res.clone();
+          caches.open(CACHE_NAME).then((c) => c.put(request, clone));
+          return res;
+        })
+      )
+    );
+    return;
+  }
+
+  // JS/CSS/images — stale-while-revalidate
   event.respondWith(
-    caches.match(request).then((cachedResponse) => {
-      if (cachedResponse) {
-        // Return cached version but update cache in background
-        const fetchPromise = fetch(request).then((networkResponse) => {
-          if (networkResponse && networkResponse.status === 200) {
-            const responseClone = networkResponse.clone();
-            caches.open(CACHE_NAME).then((cache) => {
-              cache.put(request, responseClone);
-            });
+    caches.open(CACHE_NAME).then((cache) =>
+      cache.match(request).then((cached) => {
+        const fetchPromise = fetch(request).then((res) => {
+          if (res && res.status === 200 && res.type !== 'opaque') {
+            cache.put(request, res.clone());
           }
-          return networkResponse;
-        }).catch(() => cachedResponse);
-
-        // For kotoba.csv, always return cache first (it's large)
-        if (url.pathname.endsWith('kotoba.csv')) {
-          return cachedResponse;
-        }
-
-        return cachedResponse;
-      }
-
-      // Not in cache: fetch from network
-      return fetch(request).then((networkResponse) => {
-        if (!networkResponse || networkResponse.status !== 200 || networkResponse.type === 'opaque') {
-          return networkResponse;
-        }
-        const responseClone = networkResponse.clone();
-        caches.open(CACHE_NAME).then((cache) => {
-          cache.put(request, responseClone);
-        });
-        return networkResponse;
-      }).catch(() => {
-        // Offline fallback for navigation requests
-        if (request.mode === 'navigate') {
-          return caches.match('./index.html');
-        }
-      });
-    })
+          return res;
+        }).catch(() => null);
+        return cached || fetchPromise;
+      })
+    )
   );
 });

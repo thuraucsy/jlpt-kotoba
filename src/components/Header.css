@@ -88,3 +88,24 @@
   height: 2px;
   background: linear-gradient(90deg, var(--accent-primary), var(--accent-gold), var(--accent-teal), transparent);
 }
+
+.install-btn {
+  padding: 0.3rem 0.75rem;
+  background: var(--accent-primary);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity 0.2s;
+}
+.install-btn:hover { opacity: 0.85; }
+
+.install-badge {
+  font-size: 0.72rem;
+  color: #4caf50;
+  font-weight: 600;
+  white-space: nowrap;
+}
