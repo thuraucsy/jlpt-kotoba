@@ -1,0 +1,90 @@
+.header {
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.header-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0.85rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.header-logo {
+  font-size: 1.8rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-gold));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+  display: block;
+  min-width: 2rem;
+}
+
+.header-title-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.header-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+}
+
+.header-subtitle {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.header-meta {
+  flex-shrink: 0;
+}
+
+.header-count {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.count-filtered {
+  color: var(--accent-teal);
+  font-weight: 700;
+}
+
+.count-total {
+  color: var(--accent-gold);
+  font-weight: 700;
+}
+
+.count-sep {
+  color: var(--text-muted);
+}
+
+.count-label {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+}
+
+.header-stripe {
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent-primary), var(--accent-gold), var(--accent-teal), transparent);
+}

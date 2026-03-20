@@ -1,0 +1,208 @@
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-primary);
+  background-image:
+    radial-gradient(ellipse at top left, rgba(233, 69, 96, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at bottom right, rgba(15, 52, 96, 0.15) 0%, transparent 50%);
+}
+
+.app-main {
+  flex: 1;
+  padding: 1rem;
+  max-width: 900px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* ========================
+   Loading & Error States
+======================== */
+.loading-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  gap: 1.5rem;
+}
+
+.loading-kanji {
+  font-size: 5rem;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.95); }
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--border-color);
+  border-top-color: var(--accent-primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loading-text {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  letter-spacing: 0.05em;
+}
+
+.error-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  gap: 1rem;
+  padding: 2rem;
+  text-align: center;
+}
+
+.error-screen h2 {
+  color: var(--accent-primary);
+  font-size: 1.5rem;
+}
+
+.error-screen p {
+  color: var(--text-secondary);
+}
+
+/* ========================
+   Mode Tabs
+======================== */
+.mode-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  background: var(--bg-secondary);
+  padding: 0.4rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+}
+
+.mode-tab {
+  flex: 1;
+  padding: 0.6rem 0.5rem;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  white-space: nowrap;
+}
+
+.mode-tab:hover {
+  color: var(--text-primary);
+  background: var(--bg-elevated);
+}
+
+.mode-tab.active {
+  background: var(--accent-primary);
+  color: white;
+  box-shadow: var(--shadow-sm);
+}
+
+.tab-icon {
+  font-size: 1rem;
+}
+
+/* ========================
+   Level Filter
+======================== */
+.level-filter {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+  align-items: center;
+}
+
+.level-label {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-right: 0.25rem;
+}
+
+.level-btn {
+  padding: 0.3rem 0.75rem;
+  border: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: var(--transition);
+  min-width: 2.5rem;
+}
+
+.level-btn:hover {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+}
+
+.level-btn.active {
+  background: var(--accent-primary);
+  border-color: var(--accent-primary);
+  color: white;
+}
+
+.level-btn[data-level="1"].active { background: #4caf50; border-color: #4caf50; }
+.level-btn[data-level="2"].active { background: #2196f3; border-color: #2196f3; }
+.level-btn[data-level="3"].active { background: #ff9800; border-color: #ff9800; }
+.level-btn[data-level="4"].active { background: #9c27b0; border-color: #9c27b0; }
+.level-btn[data-level="5"].active { background: #e91e63; border-color: #e91e63; }
+.level-btn[data-level="外"].active { background: #607d8b; border-color: #607d8b; }
+.level-btn[data-level="留"].active { background: #795548; border-color: #795548; }
+
+/* ========================
+   Stats Bar
+======================== */
+.stats-bar {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.stat-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.75rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.stat-chip strong {
+  color: var(--accent-gold);
+}
+
+@media (max-width: 480px) {
+  .mode-tab .tab-label {
+    display: none;
+  }
+  .tab-icon {
+    font-size: 1.2rem;
+  }
+}
