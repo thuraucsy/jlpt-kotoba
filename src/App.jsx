@@ -14,6 +14,7 @@ const MODES = [
 
 export default function App() {
   const [mode, setMode] = useState('flashcard');
+  const [searchQuery, setSearchQuery] = useState('');
   const {
     words,
     filteredWords,
@@ -21,8 +22,6 @@ export default function App() {
     error,
     selectedLevel,
     setSelectedLevel,
-    searchQuery,
-    setSearchQuery,
     levelCounts,
     levels,
     favorites,
@@ -97,11 +96,7 @@ export default function App() {
           <Quiz filteredWords={filteredWords} allWords={words} />
         )}
         {mode === 'search' && (
-          <WordList
-            filteredWords={words}
-            searchQuery={searchQuery}
-            setSearchQuery={setSearchQuery}
-          />
+          <WordList allWords={words} searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
         )}
       </main>
     </div>

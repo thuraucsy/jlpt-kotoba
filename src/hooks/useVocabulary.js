@@ -40,7 +40,6 @@ export function useVocabulary() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedLevel, setSelectedLevel] = useState('All');
-  const [searchQuery, setSearchQuery] = useState('');
   const [favorites, setFavorites] = useState(() => {
     try { return new Set(JSON.parse(localStorage.getItem('kotoba-favs') || '[]')); }
     catch { return new Set(); }
@@ -93,20 +92,8 @@ export function useVocabulary() {
       result = result.filter((w) => w.level === selectedLevel);
     }
 
-    if (searchQuery.trim()) {
-      const q = searchQuery.trim().toLowerCase();
-      result = result.filter(
-        (w) =>
-          w.kana.toLowerCase().includes(q) ||
-          w.kanji.toLowerCase().includes(q) ||
-          w.romaji.toLowerCase().includes(q) ||
-          w.meaning_mm.toLowerCase().includes(q) ||
-          w.meaning_en.toLowerCase().includes(q)
-      );
-    }
-
     return result;
-  }, [words, selectedLevel, searchQuery, favorites]);
+  }, [words, selectedLevel, favorites]);
 
   const levelCounts = useMemo(() => {
     const counts = {};
@@ -128,8 +115,6 @@ export function useVocabulary() {
     error,
     selectedLevel,
     setSelectedLevel,
-    searchQuery,
-    setSearchQuery,
     levelCounts,
     levels: LEVELS,
     getRandomWords,

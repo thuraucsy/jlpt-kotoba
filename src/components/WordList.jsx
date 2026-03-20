@@ -85,7 +85,7 @@ function WordRow({ word, expanded, onToggle }) {
   );
 }
 
-export default function WordList({ filteredWords, searchQuery, setSearchQuery }) {
+export default function WordList({ allWords, searchQuery, setSearchQuery }) {
   const [expandedNo, setExpandedNo] = useState(null);
   const [page, setPage] = useState(1);
   const [sortBy, setSortBy] = useState('default');
@@ -100,16 +100,28 @@ export default function WordList({ filteredWords, searchQuery, setSearchQuery })
     setExpandedNo(null);
   }, [setSearchQuery]);
 
+  const filtered = useMemo(() => {
+    if (!searchQuery.trim()) return allWords;
+    const q = searchQuery.trim().toLowerCase();
+    return allWords.filter(w =>
+      w.kana.toLowerCase().includes(q) ||
+      w.kanji.toLowerCase().includes(q) ||
+      w.romaji.toLowerCase().includes(q) ||
+      w.meaning_mm.toLowerCase().includes(q) ||
+      w.meaning_en.toLowerCase().includes(q)
+    );
+  }, [allWords, searchQuery]);
+
   const sorted = useMemo(() => {
     if (sortBy === 'kana') {
-      return [...filteredWords].sort((a, b) => a.kana.localeCompare(b.kana, 'ja'));
+      return [...filtered].sort((a, b) => a.kana.localeCompare(b.kana, 'ja'));
     }
     if (sortBy === 'level') {
       const levelOrder = { '1': 1, '2': 2, '3': 3, '4': 4, '外': 5, '留': 6 };
-      return [...filteredWords].sort((a, b) => (levelOrder[a.level] || 9) - (levelOrder[b.level] || 9));
+      return [...filtered].sort((a, b) => (levelOrder[a.level] || 9) - (levelOrder[b.level] || 9));
     }
-    return filteredWords; // default = CSV order
-  }, [filteredWords, sortBy]);
+    return filtered;
+  }, [filtered, sortBy]);
 
   const totalPages = Math.ceil(sorted.length / PAGE_SIZE);
   const pageWords = sorted.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
@@ -161,7 +173,7 @@ export default function WordList({ filteredWords, searchQuery, setSearchQuery })
 
       <div className="word-list-meta">
         <span className="wl-count">
-          {filteredWords.length.toLocaleString()} words
+          {filtered.length.toLocaleString()} words
           {searchQuery && <span className="wl-search-tag"> for "{searchQuery}"</span>}
         </span>
         {totalPages > 1 && (
