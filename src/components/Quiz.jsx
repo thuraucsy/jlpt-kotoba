@@ -61,11 +61,12 @@ export default function Quiz({ filteredWords, allWords }) {
   }, [filteredWords, allWords]);
 
   useEffect(() => {
+    if (timerRef.current) clearTimeout(timerRef.current);
     startQuiz();
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
     };
-  }, []);
+  }, [filteredWords]);
 
   const handleAnswer = useCallback((option) => {
     if (selectedAnswer !== null) return;
