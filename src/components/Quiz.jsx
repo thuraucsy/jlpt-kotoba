@@ -45,8 +45,9 @@ export default function Quiz({ filteredWords, allWords }) {
 
   const startQuiz = useCallback(() => {
     const pool = filteredWords.length >= 4 ? filteredWords : allWords;
+    const quizLength = Math.min(QUIZ_LENGTH, pool.length);
     const qs = [];
-    for (let i = 0; i < QUIZ_LENGTH; i++) {
+    for (let i = 0; i < quizLength; i++) {
       const q = generateQuestion(pool, allWords.length > 0 ? allWords : pool);
       if (q) qs.push(q);
     }

@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import Papa from 'papaparse';
 
-const LEVELS = ['All', '1', '2', '3', '4', '5', '外', '留'];
+const LEVELS = ['All', 'Fav', '1', '2', '3', '4', '5', '外', '留'];
 
 const LEVEL_REMAP = { '': '3', '3': '4', '4': '5' };
 
@@ -41,6 +41,19 @@ export function useVocabulary() {
   const [error, setError] = useState(null);
   const [selectedLevel, setSelectedLevel] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
+  const [favorites, setFavorites] = useState(() => {
+    try { return new Set(JSON.parse(localStorage.getItem('kotoba-favs') || '[]')); }
+    catch { return new Set(); }
+  });
+
+  function toggleFavorite(no) {
+    setFavorites((prev) => {
+      const next = new Set(prev);
+      next.has(no) ? next.delete(no) : next.add(no);
+      localStorage.setItem('kotoba-favs', JSON.stringify([...next]));
+      return next;
+    });
+  }
 
   useEffect(() => {
     const csvUrl = import.meta.env.BASE_URL + 'kotoba.csv';
@@ -74,7 +87,9 @@ export function useVocabulary() {
   const filteredWords = useMemo(() => {
     let result = words;
 
-    if (selectedLevel !== 'All') {
+    if (selectedLevel === 'Fav') {
+      result = result.filter((w) => favorites.has(w.no));
+    } else if (selectedLevel !== 'All') {
       result = result.filter((w) => w.level === selectedLevel);
     }
 
@@ -91,7 +106,7 @@ export function useVocabulary() {
     }
 
     return result;
-  }, [words, selectedLevel, searchQuery]);
+  }, [words, selectedLevel, searchQuery, favorites]);
 
   const levelCounts = useMemo(() => {
     const counts = {};
@@ -118,5 +133,7 @@ export function useVocabulary() {
     levelCounts,
     levels: LEVELS,
     getRandomWords,
+    favorites,
+    toggleFavorite,
   };
 }

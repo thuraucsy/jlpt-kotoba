@@ -23,6 +23,8 @@ export default function App() {
     setSearchQuery,
     levelCounts,
     levels,
+    favorites,
+    toggleFavorite,
   } = useVocabulary();
 
   if (loading) {
@@ -95,13 +97,13 @@ export default function App() {
               onClick={() => setSelectedLevel(lvl)}
               title={lvl === 'All' ? `All (${words.length})` : `(${levelCounts[lvl] || 0})`}
             >
-              {lvl === 'All' ? 'All' : lvl === '外' ? '外' : lvl === '留' ? '留' : `N${lvl}`}
+              {lvl === 'All' ? 'All' : lvl === 'Fav' ? '★ Fav' : (lvl === '外' || lvl === '留') ? lvl : `N${lvl}`}
             </button>
           ))}
         </div>
 
         {/* Content */}
-        {mode === 'flashcard' && <Flashcard filteredWords={filteredWords} />}
+        {mode === 'flashcard' && <Flashcard filteredWords={filteredWords} favorites={favorites} toggleFavorite={toggleFavorite} />}
         {mode === 'quiz' && <Quiz filteredWords={filteredWords} allWords={words} />}
       </main>
     </div>

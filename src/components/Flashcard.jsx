@@ -52,7 +52,7 @@ function CardBack({ word }) {
   );
 }
 
-export default function Flashcard({ filteredWords }) {
+export default function Flashcard({ filteredWords, favorites, toggleFavorite }) {
   const [index, setIndex] = useState(0);
   const [flipped, setFlipped] = useState(false);
   const [direction, setDirection] = useState(null);
@@ -142,6 +142,14 @@ export default function Flashcard({ filteredWords }) {
       </div>
 
       <div className="flashcard-controls">
+        <button
+          className={`fc-btn fc-btn-fav${word && favorites && favorites.has(word.no) ? ' is-fav' : ''}`}
+          onClick={(e) => { e.stopPropagation(); word && toggleFavorite && toggleFavorite(word.no); }}
+          aria-label="Toggle favorite"
+          title="Favorite"
+        >
+          {word && favorites && favorites.has(word.no) ? '★' : '☆'}
+        </button>
         <button
           className="fc-btn fc-btn-nav"
           onClick={(e) => { e.stopPropagation(); navigate('prev'); }}

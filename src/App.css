@@ -164,6 +164,7 @@
   color: white;
 }
 
+.level-btn[data-level="Fav"].active { background: #f5a623; border-color: #f5a623; }
 .level-btn[data-level="1"].active { background: #4caf50; border-color: #4caf50; }
 .level-btn[data-level="2"].active { background: #2196f3; border-color: #2196f3; }
 .level-btn[data-level="3"].active { background: #ff9800; border-color: #ff9800; }

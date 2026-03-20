@@ -292,6 +292,15 @@
   font-size: 1rem;
 }
 
+.fc-btn-fav {
+  padding: 0.6rem 0.9rem;
+  font-size: 1.2rem;
+  color: var(--text-muted);
+}
+.fc-btn-fav.is-fav {
+  color: #f5a623;
+}
+
 /* Keyboard hint */
 .flashcard-keyboard-hint {
   display: flex;
