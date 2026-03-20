@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import './Flashcard.css';
 import RubyText from './RubyText.jsx';
+import AudioPlayer from './AudioPlayer.jsx';
 
 function LevelBadge({ level }) {
   return (
@@ -21,6 +22,7 @@ function CardFront({ word }) {
       {word.part_of_speech && (
         <div className="card-pos">{word.part_of_speech}</div>
       )}
+      <AudioPlayer wordId={word.no} />
       <div className="card-level-row">
         <LevelBadge level={word.level} />
         <span className="card-no">#{word.no}</span>

@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import './WordList.css';
 import RubyText from './RubyText.jsx';
+import AudioPlayer from './AudioPlayer.jsx';
 
 const PAGE_SIZE = 50;
 
@@ -62,6 +63,7 @@ function WordRow({ word, expanded, onToggle }) {
 
       {expanded && (
         <div className="word-row-detail" onClick={(e) => e.stopPropagation()}>
+          <AudioPlayer wordId={word.no} />
           {word.meaning_en && (
             <div className="detail-row">
               <span className="detail-label">English:</span>
