@@ -5,7 +5,8 @@ export default function RubyText({ text }) {
   if (!text) return null;
 
   const parts = [];
-  const regex = /([^\s(（]+)\(([^)）]+)\)/g;
+  // Match only kanji/katakana as the ruby base (not hiragana or kana prefixes)
+  const regex = /([\u3400-\u9fff\u30a0-\u30ff\uff66-\uff9f\u3005]+)\(([^)）]+)\)/g;
   let last = 0;
   let match;
 
@@ -15,8 +16,7 @@ export default function RubyText({ text }) {
     }
     parts.push(
       <ruby key={match.index}>
-        {match[1]}
-        <rt>{match[2]}</rt>
+        {match[1]}<rt>{match[2]}</rt>
       </ruby>
     );
     last = match.index + match[0].length;

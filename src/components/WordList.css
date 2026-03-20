@@ -304,14 +304,10 @@
 .ex-jp {
   font-size: 0.82rem;
   color: var(--text-secondary);
-  line-height: 2;
+  line-height: 2.4;
   margin-bottom: 0.15rem;
 }
 
-.ex-jp ruby rt {
-  font-size: 0.65em;
-  color: var(--text-muted);
-}
 
 .examples-toggle {
   margin-top: 0.4rem;

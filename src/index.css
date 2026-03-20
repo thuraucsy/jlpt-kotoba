@@ -93,6 +93,15 @@ button {
   font-family: inherit;
 }
 
+ruby {
+  ruby-position: over;
+}
+
+rt {
+  font-size: 0.55em;
+  color: var(--text-muted);
+}
+
 input, select {
   font-family: inherit;
 }
