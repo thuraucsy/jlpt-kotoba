@@ -3,11 +3,13 @@ import './App.css';
 import Header from './components/Header.jsx';
 import Flashcard from './components/Flashcard.jsx';
 import Quiz from './components/Quiz.jsx';
+import WordList from './components/WordList.jsx';
 import { useVocabulary } from './hooks/useVocabulary.js';
 
 const MODES = [
   { id: 'flashcard', label: 'Flashcard', icon: '🃏' },
   { id: 'quiz', label: 'Quiz', icon: '🧠' },
+  { id: 'search', label: 'Search', icon: '🔍' },
 ];
 
 export default function App() {
@@ -65,46 +67,42 @@ export default function App() {
           ))}
         </div>
 
-        {/* Search */}
-        <input
-          type="search"
-          className="search-input"
-          placeholder="Search words… (kana, kanji, romaji, meaning)"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          style={{
-            width: '100%',
-            padding: '0.6rem 1rem',
-            marginBottom: '1rem',
-            background: 'var(--bg-secondary)',
-            border: '1px solid var(--border-color)',
-            borderRadius: 'var(--radius-md)',
-            color: 'var(--text-primary)',
-            fontSize: '0.9rem',
-            outline: 'none',
-            boxSizing: 'border-box',
-          }}
-        />
-
-        {/* Level Filter */}
-        <div className="level-filter">
-          <span className="level-label">Level:</span>
-          {levels.map((lvl) => (
-            <button
-              key={lvl}
-              data-level={lvl}
-              className={`level-btn${selectedLevel === lvl ? ' active' : ''}`}
-              onClick={() => setSelectedLevel(lvl)}
-              title={lvl === 'All' ? `All (${words.length})` : `(${levelCounts[lvl] || 0})`}
-            >
-              {lvl === 'All' ? 'All' : lvl === 'Fav' ? '★ Fav' : (lvl === '外' || lvl === '留') ? lvl : `N${lvl}`}
-            </button>
-          ))}
-        </div>
+        {/* Level Filter — hidden on search tab since WordList has its own search */}
+        {mode !== 'search' && (
+          <div className="level-filter">
+            <span className="level-label">Level:</span>
+            {levels.map((lvl) => (
+              <button
+                key={lvl}
+                data-level={lvl}
+                className={`level-btn${selectedLevel === lvl ? ' active' : ''}`}
+                onClick={() => setSelectedLevel(lvl)}
+                title={lvl === 'All' ? `All (${words.length})` : `(${levelCounts[lvl] || 0})`}
+              >
+                {lvl === 'All' ? 'All' : lvl === 'Fav' ? '★ Fav' : (lvl === '外' || lvl === '留') ? lvl : `N${lvl}`}
+              </button>
+            ))}
+          </div>
+        )}
 
         {/* Content */}
-        {mode === 'flashcard' && <Flashcard filteredWords={filteredWords} favorites={favorites} toggleFavorite={toggleFavorite} />}
-        {mode === 'quiz' && <Quiz filteredWords={filteredWords} allWords={words} />}
+        {mode === 'flashcard' && (
+          <Flashcard
+            filteredWords={filteredWords}
+            favorites={favorites}
+            toggleFavorite={toggleFavorite}
+          />
+        )}
+        {mode === 'quiz' && (
+          <Quiz filteredWords={filteredWords} allWords={words} />
+        )}
+        {mode === 'search' && (
+          <WordList
+            filteredWords={words}
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+          />
+        )}
       </main>
     </div>
   );
