@@ -28,6 +28,26 @@
     'Noto Sans JP', sans-serif;
 }
 
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg-primary: #f5f5f7;
+    --bg-secondary: #ffffff;
+    --bg-card: #ffffff;
+    --bg-elevated: #e8e8f0;
+    --accent-primary: #e94560;
+    --accent-secondary: #0f3460;
+    --accent-gold: #d4890a;
+    --accent-teal: #2aada5;
+    --text-primary: #1a1a2e;
+    --text-secondary: #4a4a6a;
+    --text-muted: #8888aa;
+    --border-color: #d0d0e0;
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+    --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.12);
+    --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.16);
+  }
+}
+
 html {
   scroll-behavior: smooth;
 }
