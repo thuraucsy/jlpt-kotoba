@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import './WordList.css';
+import RubyText from './RubyText.jsx';
 
 const PAGE_SIZE = 50;
 
@@ -8,6 +9,30 @@ function LevelBadge({ level }) {
     <span className={`wl-level-badge level-${level}`}>
       {level === '外' ? '外' : level === '留' ? '留' : `N${level}`}
     </span>
+  );
+}
+
+function ExpandableExamples({ examples }) {
+  const [showAll, setShowAll] = useState(false);
+  const visible = showAll ? examples : examples.slice(0, 2);
+  return (
+    <div className="detail-examples">
+      <div className="detail-label examples-label">例文:</div>
+      {visible.map((ex, i) => (
+        <div key={i} className="example-pair">
+          {ex.jp && <div className="ex-jp"><RubyText text={ex.jp} /></div>}
+          {ex.en && <div className="ex-en">{ex.en}</div>}
+        </div>
+      ))}
+      {examples.length > 2 && (
+        <button
+          className="examples-toggle"
+          onClick={(e) => { e.stopPropagation(); setShowAll((s) => !s); }}
+        >
+          {showAll ? '▲ Hide' : `▼ +${examples.length - 2} more examples`}
+        </button>
+      )}
+    </div>
   );
 }
 
@@ -50,15 +75,7 @@ function WordRow({ word, expanded, onToggle }) {
             </div>
           )}
           {word.examples && word.examples.length > 0 && (
-            <div className="detail-examples">
-              <div className="detail-label examples-label">例文:</div>
-              {word.examples.slice(0, 3).map((ex, i) => (
-                <div key={i} className="example-pair">
-                  {ex.jp && <div className="ex-jp">{ex.jp}</div>}
-                  {ex.en && <div className="ex-en">{ex.en}</div>}
-                </div>
-              ))}
-            </div>
+            <ExpandableExamples examples={word.examples} />
           )}
         </div>
       )}

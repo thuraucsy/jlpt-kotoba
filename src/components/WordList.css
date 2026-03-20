@@ -304,9 +304,26 @@
 .ex-jp {
   font-size: 0.82rem;
   color: var(--text-secondary);
-  line-height: 1.5;
+  line-height: 2;
   margin-bottom: 0.15rem;
 }
+
+.ex-jp ruby rt {
+  font-size: 0.65em;
+  color: var(--text-muted);
+}
+
+.examples-toggle {
+  margin-top: 0.4rem;
+  background: none;
+  border: none;
+  color: var(--accent-primary);
+  font-size: 0.75rem;
+  cursor: pointer;
+  padding: 0.2rem 0;
+  opacity: 0.8;
+}
+.examples-toggle:hover { opacity: 1; }
 
 .ex-en {
   font-size: 0.75rem;

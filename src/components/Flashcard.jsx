@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import './Flashcard.css';
+import RubyText from './RubyText.jsx';
 
 function LevelBadge({ level }) {
   return (
@@ -29,8 +30,9 @@ function CardFront({ word }) {
 }
 
 function CardBack({ word }) {
-  const hasExamples = word.examples && word.examples.length > 0;
-  const firstExample = hasExamples ? word.examples[0] : null;
+  const [showAll, setShowAll] = useState(false);
+  const examples = word.examples || [];
+  const visible = showAll ? examples : examples.slice(0, 1);
 
   return (
     <div className="card-face card-back">
@@ -40,13 +42,19 @@ function CardBack({ word }) {
       {word.meaning_en && (
         <div className="card-meaning-en">{word.meaning_en}</div>
       )}
-      {firstExample && (
-        <div className="card-example">
-          <div className="example-jp">{firstExample.jp}</div>
-          {firstExample.en && (
-            <div className="example-en">{firstExample.en}</div>
-          )}
+      {visible.map((ex, i) => (
+        <div key={i} className="card-example">
+          <div className="example-jp"><RubyText text={ex.jp} /></div>
+          {ex.en && <div className="example-en">{ex.en}</div>}
         </div>
+      ))}
+      {examples.length > 1 && (
+        <button
+          className="examples-toggle"
+          onClick={(e) => { e.stopPropagation(); setShowAll((s) => !s); }}
+        >
+          {showAll ? `▲ Hide` : `▼ +${examples.length - 1} more examples`}
+        </button>
       )}
     </div>
   );
