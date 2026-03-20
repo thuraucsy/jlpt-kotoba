@@ -109,3 +109,40 @@
   font-weight: 600;
   white-space: nowrap;
 }
+
+.font-size-ctrl {
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
+}
+
+.fs-btn {
+  padding: 0.25rem 0.45rem;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+
+.fs-btn:hover:not(:disabled) {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+}
+
+.fs-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.fs-reset {
+  min-width: 2rem;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.68rem;
+}

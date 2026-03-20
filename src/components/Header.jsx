@@ -1,9 +1,11 @@
 import React from 'react';
 import './Header.css';
 import { useInstallPrompt } from '../hooks/useInstallPrompt.js';
+import { useFontSize } from '../hooks/useFontSize.js';
 
 export default function Header({ wordCount, totalCount }) {
   const { canInstall, installed, triggerInstall } = useInstallPrompt();
+  const { size, increase, decrease, reset, isMin, isMax } = useFontSize();
 
   return (
     <header className="header">
@@ -29,6 +31,11 @@ export default function Header({ wordCount, totalCount }) {
               <span className="count-label"> words</span>
             </span>
           )}
+          <div className="font-size-ctrl">
+            <button className="fs-btn" onClick={decrease} disabled={isMin} aria-label="Decrease font size">A−</button>
+            <button className="fs-btn fs-reset" onClick={reset} aria-label="Reset font size">{size}</button>
+            <button className="fs-btn" onClick={increase} disabled={isMax} aria-label="Increase font size">A+</button>
+          </div>
           {installed && (
             <span className="install-badge" title="Installed">✓ App</span>
           )}
