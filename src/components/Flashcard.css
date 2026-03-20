@@ -121,7 +121,7 @@
 }
 
 .card-back {
-  background: linear-gradient(145deg, #1a0a1e, #2d1b40);
+  background: linear-gradient(145deg, var(--bg-card), var(--bg-elevated));
   transform: rotateY(180deg);
   position: relative;
   inset: unset;
@@ -129,6 +129,12 @@
   padding-top: 2.5rem;
   min-height: 340px;
   height: auto;
+}
+
+@media (prefers-color-scheme: dark) {
+  .card-back {
+    background: linear-gradient(145deg, #1a0a1e, #2d1b40);
+  }
 }
 
 .card-hint {
@@ -160,7 +166,7 @@
 .card-pos {
   font-size: 0.75rem;
   color: var(--accent-teal);
-  background: rgba(78, 205, 196, 0.1);
+  background: rgba(78, 205, 196, 0.15);
   padding: 0.2rem 0.6rem;
   border-radius: 10px;
   margin-bottom: 0.5rem;
@@ -210,7 +216,7 @@
 .card-example {
   margin-top: 0.5rem;
   padding: 0.75rem 1rem;
-  background: rgba(255,255,255,0.05);
+  background: var(--bg-elevated);
   border-radius: var(--radius-sm);
   border-left: 2px solid var(--accent-primary);
   width: 100%;
